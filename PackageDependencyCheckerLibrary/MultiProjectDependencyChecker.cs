@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace PackageDependencyCheckerLibrary;
 
@@ -15,9 +16,23 @@ public class MultiProjectDependencyChecker
 
     public DependencyInfoList GetDependencyInfoList()
     {
-        var dirInfo = new DirectoryInfo(_folderName);
+        var list = new DependencyInfoList();
         var csprojFiles = GetCsprojFiles();
-        return null;
+        
+        foreach (var dependencies in csprojFiles.Select(csprojFile => new DependencyChecker(csprojFile)))
+            list.AddRange(dependencies.GetDependencies().Select(dependency => new DependencyInfo(dependency)));
+
+        foreach (var d in list)
+        {
+            d.ProjectNameCount = list.Count(x => x.ProjectName == d.ProjectName);
+            d.PackageNameCount = list.Count(x => x.PackageName == d.PackageName);
+            d.PackageVersionCount = list.Count(x => x.PackageName == d.PackageName && x.PackageVersion == d.PackageVersion);
+            d.FrameworkCount = list.Count(x => x.Framework == d.Framework);
+        }
+
+        var result = new DependencyInfoList();
+        result.AddRange(list.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ThenBy(x => x.ProjectName));
+        return result;
     }
 
     public List<string> GetCsprojFiles()

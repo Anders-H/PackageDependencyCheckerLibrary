@@ -37,11 +37,11 @@ public class DependencyChecker
         {
             var nameOnly = fileInfo.Name.Substring(0, fileInfo.Name.Length - 7);
             var framework = "";
-            var contents = $@"<?xml version = ""1.0"" encoding = ""UTF-8"" standalone = ""yes"" ?>
-{File.ReadAllText(fileInfo.FullName)}
-";
+//            var contents = $@"<?xml version = ""1.0"" encoding = ""UTF-8"" standalone = ""yes"" ?>
+//{File.ReadAllText(fileInfo.FullName)}
+//";
             var dom = new XmlDocument();
-            dom.LoadXml(contents);
+            dom.LoadXml(File.ReadAllText(fileInfo.FullName));
             var doc = dom.DocumentElement;
 
             if (doc == null)
@@ -50,8 +50,11 @@ public class DependencyChecker
             if (doc.Name != "Project")
                 throw new SystemException("Root element is not 'Project'.");
 
-            foreach (XmlElement element in doc.ChildNodes)
+            foreach (object o in doc.ChildNodes)
             {
+                if (o is not XmlElement element)
+                    continue;
+
                 if (element.Name == "PropertyGroup" && framework == "")
                 {
                     foreach (XmlElement item in element.ChildNodes)

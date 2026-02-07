@@ -3,6 +3,20 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <Title>Package Dependency Checker</Title>
+    <Company>WinSoft.se</Company>
+    <Description>A library for extracting Nuget dependencies from a folder.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Anders-H/PackageDependencyCheckerLibrary</RepositoryUrl>
+    <PackAsTool>False</PackAsTool>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

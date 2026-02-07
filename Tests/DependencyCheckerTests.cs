@@ -33,6 +33,7 @@ public sealed class DependencyCheckerTests
         Assert.IsNull(d);
     }
 
+    [TestMethod]
     public void GetCsprojFiles()
     {
         const string folder = @"D:\GitRepos";
@@ -43,8 +44,16 @@ public sealed class DependencyCheckerTests
             System.Diagnostics.Debug.WriteLine(file);
     }
 
+    [TestMethod]
     public void GetDependencyInfoList()
     {
-        
+        const string folder = @"D:\GitRepos";
+        var x = new MultiProjectDependencyChecker(folder);
+        var response = x.GetDependencyInfoList();
+
+        foreach (var r in response)
+            System.Diagnostics.Debug.WriteLine(@$"Name: {r.ProjectName} ({r.ProjectNameCount}),
+Package: {r.PackageName} ({r.PackageNameCount}), Version: {r.PackageVersion} ({r.PackageVersionCount}),
+Framework: {r.Framework} ({r.FrameworkCount})");
     }
 }
