@@ -23,7 +23,7 @@ public void GetDependencyInfoList()
         System.Diagnostics.Debug.WriteLine(@$"Name: {r.ProjectName} ({r.ProjectNameCount}),
 Package: {r.PackageName} ({r.PackageNameCount}), Version: {r.PackageVersion} ({r.PackageVersionCount}),
 Framework: {r.Framework} ({r.FrameworkCount})");
-    }
+}
 ```
 
 Output:
