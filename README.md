@@ -4,18 +4,23 @@ A library for extracting Nuget dependencies from a folder.
 
 Uses .NET Standard 2.0, so it works with .NET Framework 4.8 and .NET 8, 9 and 10.
 
+## Installation
+
+```
+Install-Package PackageDependencyCheckerLibrary
+```
+
 ## Example
 
 ```
- [TestMethod]
- public void GetDependencyInfoList()
- {
-     const string folder = @"D:\GitRepos";
-     var x = new MultiProjectDependencyChecker(folder);
-     var response = x.GetDependencyInfoList();
+public void GetDependencyInfoList()
+{
+    const string folder = @"D:\GitRepos";
+    var x = new MultiProjectDependencyChecker(folder);
+    var response = x.GetDependencyInfoList();
 
-     foreach (var r in response)
-         System.Diagnostics.Debug.WriteLine(@$"Name: {r.ProjectName} ({r.ProjectNameCount}),
+    foreach (var r in response)
+        System.Diagnostics.Debug.WriteLine(@$"Name: {r.ProjectName} ({r.ProjectNameCount}),
 Package: {r.PackageName} ({r.PackageNameCount}), Version: {r.PackageVersion} ({r.PackageVersionCount}),
 Framework: {r.Framework} ({r.FrameworkCount})");
     }
