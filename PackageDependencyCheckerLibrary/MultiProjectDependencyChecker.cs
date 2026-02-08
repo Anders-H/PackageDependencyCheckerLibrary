@@ -1,7 +1,9 @@
 ﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PackageDependencyCheckerLibrary.TreeStructure;
 
 namespace PackageDependencyCheckerLibrary;
 
@@ -12,6 +14,16 @@ public class MultiProjectDependencyChecker
     public MultiProjectDependencyChecker(string folderName)
     {
         _folderName = folderName;
+    }
+
+    public RootFolder GetTree(out DependencyInfoList data)
+    {
+        data = GetDependencyInfoList();
+        var result = new RootFolder();
+        var csProjectFolder = new CsProjectsFolder();
+        csProjectFolder.Load(data);
+        result.Add(csProjectFolder);
+        return result;
     }
 
     public DependencyInfoList GetDependencyInfoList()
@@ -42,7 +54,7 @@ public class MultiProjectDependencyChecker
 
         foreach (var fileInfo in dirInfo.GetFiles())
         {
-            if(fileInfo.Extension.Equals(".csproj", System.StringComparison.OrdinalIgnoreCase))
+            if(fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase))
                 csprojFiles.Add(fileInfo.FullName);
         }
 
@@ -58,7 +70,7 @@ public class MultiProjectDependencyChecker
 
         foreach (var fileInfo in dirInfo.GetFiles())
         {
-            if(fileInfo.Extension.Equals(".csproj", System.StringComparison.OrdinalIgnoreCase))
+            if(fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase))
                 csprojFiles.Add(fileInfo.FullName);
         }
 

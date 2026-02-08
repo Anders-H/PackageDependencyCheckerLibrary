@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="README.md" />
   </Folder>
+  <Project Path="PackageDependencies/PackageDependencies.csproj" Id="91d81f56-777c-41ed-9e09-7bcb710b3339" />
   <Project Path="PackageDependencyCheckerLibrary/PackageDependencyCheckerLibrary.csproj" />
   <Project Path="Tests/Tests.csproj" Id="db313ead-17b5-4da5-84b4-5c201117ccd5" />
 </Solution>
