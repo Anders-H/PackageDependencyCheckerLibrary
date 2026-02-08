@@ -112,7 +112,7 @@ public partial class MainWindow : Form
         {
             foreach (var dependency in csProject.Dependencies)
             {
-                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.PackageVersionCount}, usage: xxx)");
+                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.PackageVersionCount}, usage: {_data.GetUsageCount(dependency.PackageName)})");
                 childNode.Tag = dependency;
                 node.Nodes.Add(childNode);
             }
