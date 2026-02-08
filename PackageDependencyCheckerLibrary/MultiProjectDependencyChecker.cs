@@ -20,9 +20,15 @@ public class MultiProjectDependencyChecker
     {
         data = GetDependencyInfoList();
         var result = new RootFolder();
+
         var csProjectFolder = new CsProjectsFolder();
         csProjectFolder.Load(data);
         result.Add(csProjectFolder);
+        
+        var componentsFolder = new ComponentsFolder();
+        componentsFolder.Load(data);
+        result.Add(componentsFolder);
+
         return result;
     }
 

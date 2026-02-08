@@ -18,6 +18,17 @@ public partial class MainWindow : Form
         InitializeComponent();
     }
 
+    private void MainWindow_Load(object sender, EventArgs e)
+    {
+#if DEBUG
+        var d = new MultiProjectDependencyChecker(@"D:\GitRepos");
+        var root = d.GetTree(out var data);
+        _data = data;
+        Text = $@"{ApplicationName} - D:\GitRepos";
+        RefreshView(root);
+#endif
+    }
+
     private void exitToolStripMenuItem_Click(object sender, EventArgs e)
     {
         Close();
@@ -101,6 +112,29 @@ public partial class MainWindow : Form
         {
             foreach (var dependency in csProject.Dependencies)
             {
+                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.PackageVersionCount}, usage: xxx)");
+                childNode.Tag = dependency;
+                node.Nodes.Add(childNode);
+            }
+        }
+        else if (item is ComponentsFolder componentsFolder)
+        {
+            foreach (var component in componentsFolder.Components)
+            {
+                var childNode = new TreeNode($"{component.Name} (versions: {component.Count}, usage: {_data.GetUsageCount(component.Name)})");
+                childNode.Tag = component;
+                node.Nodes.Add(childNode);
+
+                if (component.Count > 0)
+                    AddChildren(childNode, component);
+
+                childNode.Text = childNode.Text.Replace("usage: xxx", $"usage: {component.Usage.Count}");
+            }
+        }
+        else if (item is Component component)
+        {
+            foreach (var dependency in component.Usage)
+            {
                 var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion}");
                 childNode.Tag = dependency;
                 node.Nodes.Add(childNode);
@@ -122,8 +156,11 @@ public partial class MainWindow : Form
             return;
         }
 
-        if (n.Tag is CsProjectsFolder csProjectsFolder)
+        if (n.Tag is CsProjectsFolder || n.Tag is ComponentsFolder)
         {
+            var p = n.Tag as CsProjectsFolder;
+            var c = n.Tag as ComponentsFolder;
+
             listView1.BeginUpdate();
             listView1.Items.Clear();
             listView1.Columns.Clear();
@@ -136,7 +173,14 @@ public partial class MainWindow : Form
             listView1.Columns.Add("Framework", 140);
             listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
 
-            foreach (var d in _data.OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+            var dep = new DependencyInfoList();
+
+            if (p != null)
+                dep.AddRange(_data.OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ToList());
+            else if (c != null)
+                dep.AddRange(_data.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ThenBy(x => x.ProjectName).ToList());
+
+            foreach (var d in dep)
             {
                 var li = new ListViewItem(d.ProjectName);
                 li.SubItems.Add(d.ProjectNameCount.ToString());
@@ -167,6 +211,66 @@ public partial class MainWindow : Form
             foreach (var d in csProject.Dependencies.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
             {
                 var li = new ListViewItem(d.PackageName);
+                li.SubItems.Add(d.PackageNameCount.ToString());
+                li.SubItems.Add(d.PackageVersion);
+                li.SubItems.Add(d.PackageVersionCount.ToString());
+                li.SubItems.Add(d.Framework);
+                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.Tag = d;
+                listView1.Items.Add(li);
+            }
+
+            listView1.EndUpdate();
+        }
+        else if (n.Tag is DependencyInfo depInfo)
+        {
+            listView1.BeginUpdate();
+            listView1.Items.Clear();
+            listView1.Columns.Clear();
+            listView1.Columns.Add("Project Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Package Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Package Version", 140);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Framework", 140);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+
+            foreach (var d in _data.Where(x => x.PackageName == depInfo.PackageName).OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+            {
+                var li = new ListViewItem(d.ProjectName);
+                li.SubItems.Add(d.ProjectNameCount.ToString());
+                li.SubItems.Add(d.PackageName);
+                li.SubItems.Add(d.PackageNameCount.ToString());
+                li.SubItems.Add(d.PackageVersion);
+                li.SubItems.Add(d.PackageVersionCount.ToString());
+                li.SubItems.Add(d.Framework);
+                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.Tag = d;
+                listView1.Items.Add(li);
+            }
+
+            listView1.EndUpdate();
+        }
+        else if (n.Tag is Component component)
+        {
+            listView1.BeginUpdate();
+            listView1.Items.Clear();
+            listView1.Columns.Clear();
+            listView1.Columns.Add("Project Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Package Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Package Version", 140);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Framework", 140);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+
+            foreach (var d in _data.Where(x => x.PackageName == component.Name).OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+            {
+                var li = new ListViewItem(d.ProjectName);
+                li.SubItems.Add(d.ProjectNameCount.ToString());
+                li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString());
                 li.SubItems.Add(d.PackageVersion);
                 li.SubItems.Add(d.PackageVersionCount.ToString());

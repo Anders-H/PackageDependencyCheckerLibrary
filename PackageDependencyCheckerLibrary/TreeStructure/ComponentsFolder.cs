@@ -1,18 +1,18 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.Linq;
-#nullable enable
+
 namespace PackageDependencyCheckerLibrary.TreeStructure;
 
-public class CsProjectsFolder : INameAndCount
+public class ComponentsFolder : INameAndCount
 {
-    public string Name => "CS Projects";
-    public int Count => CsProjects.Count;
-    public CsProjectList CsProjects { get; }
+    public string Name => "Components";
+    public int Count => Components.Count;
+    public ComponentList Components { get; }
 
-    public CsProjectsFolder()
+    public ComponentsFolder()
     {
-        CsProjects = [];
+        Components = [];
     }
 
     internal class DependencyInfoComparer : IEqualityComparer<DependencyInfo>
@@ -25,23 +25,23 @@ public class CsProjectsFolder : INameAndCount
             if (x is null || y is null)
                 return false;
 
-            return x.ProjectName == y.ProjectName;
+            return x.PackageName == y.PackageName;
         }
         public int GetHashCode(DependencyInfo obj) =>
-            obj.ProjectName.GetHashCode();
+            obj.PackageName.GetHashCode();
     }
 
     internal void Load(DependencyInfoList list)
     {
-        CsProjects.Clear();
+        Components.Clear();
         var comparer = new DependencyInfoComparer();
         var d = list.Distinct(comparer);
 
-        foreach (var depInfo in d.OrderBy(x => x.ProjectName))
+        foreach (var depInfo in d.OrderBy(x => x.PackageName))
         {
-            var csProject = new CsProject(depInfo.ProjectName);
-            csProject.Dependencies.AddRange(list.Where(x => x.ProjectName == depInfo.ProjectName));
-            CsProjects.Add(csProject);
+            var component = new Component(depInfo.PackageName);
+            component.Usage.AddRange(list.Where(x => x.ProjectName == depInfo.ProjectName));
+            Components.Add(component);
         }
     }
 }
