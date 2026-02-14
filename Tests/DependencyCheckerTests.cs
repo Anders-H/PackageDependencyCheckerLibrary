@@ -53,7 +53,7 @@ public sealed class DependencyCheckerTests
 
         foreach (var r in response)
             System.Diagnostics.Debug.WriteLine(@$"Name: {r.ProjectName} ({r.ProjectNameCount}),
-Package: {r.PackageName} ({r.PackageNameCount}), Version: {r.PackageVersion} ({r.PackageVersionCount}),
+Package: {r.PackageName} ({r.PackageNameCount}), Version: {r.PackageVersion} ({r.GetVersions().Count}),
 Framework: {r.Framework} ({r.FrameworkCount})");
     }
 }

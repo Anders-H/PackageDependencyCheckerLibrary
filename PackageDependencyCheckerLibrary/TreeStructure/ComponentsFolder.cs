@@ -40,7 +40,7 @@ public class ComponentsFolder : INameAndCount
         foreach (var depInfo in d.OrderBy(x => x.PackageName))
         {
             var component = new Component(depInfo.PackageName);
-            component.Usage.AddRange(list.Where(x => x.ProjectName == depInfo.ProjectName));
+            component.Usage.AddRange(list.Where(x => x.PackageName == depInfo.PackageName));
             Components.Add(component);
         }
     }

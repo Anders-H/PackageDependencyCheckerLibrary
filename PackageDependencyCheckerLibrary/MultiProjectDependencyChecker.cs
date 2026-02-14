@@ -44,12 +44,15 @@ public class MultiProjectDependencyChecker
         {
             d.ProjectNameCount = list.Count(x => x.ProjectName == d.ProjectName);
             d.PackageNameCount = list.Count(x => x.PackageName == d.PackageName);
-            d.PackageVersionCount = list.Count(x => x.PackageName == d.PackageName && x.PackageVersion == d.PackageVersion);
             d.FrameworkCount = list.Count(x => x.Framework == d.Framework);
         }
 
         var result = new DependencyInfoList();
         result.AddRange(list.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ThenBy(x => x.ProjectName));
+
+        foreach (var d in result)
+            _ = d.GetVersions(result);
+
         return result;
     }
 

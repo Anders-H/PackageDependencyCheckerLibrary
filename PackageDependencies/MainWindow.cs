@@ -112,7 +112,7 @@ public partial class MainWindow : Form
         {
             foreach (var dependency in csProject.Dependencies)
             {
-                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.PackageVersionCount}, usage: {_data.GetUsageCount(dependency.PackageName)})");
+                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.GetVersions().Count}, usage: {_data.GetUsageCount(dependency.PackageName)})");
                 childNode.Tag = dependency;
                 node.Nodes.Add(childNode);
             }
@@ -121,7 +121,7 @@ public partial class MainWindow : Form
         {
             foreach (var component in componentsFolder.Components)
             {
-                var childNode = new TreeNode($"{component.Name} (versions: {component.Count}, usage: {_data.GetUsageCount(component.Name)})");
+                var childNode = new TreeNode($"{component.Name} (versions: {component.GetVersions().Count}, usage: {_data.GetUsageCount(component.Name)})");
                 childNode.Tag = component;
                 node.Nodes.Add(childNode);
 
@@ -133,9 +133,9 @@ public partial class MainWindow : Form
         }
         else if (item is Component component)
         {
-            foreach (var dependency in component.Usage)
+            foreach (var dependency in component.GetVersions())
             {
-                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion}");
+                var childNode = new TreeNode($"{dependency.VersionString}");
                 childNode.Tag = dependency;
                 node.Nodes.Add(childNode);
             }
@@ -187,7 +187,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString());
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.PackageVersionCount.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString());
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString());
                 li.Tag = d;
@@ -213,7 +213,7 @@ public partial class MainWindow : Form
                 var li = new ListViewItem(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString());
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.PackageVersionCount.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString());
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString());
                 li.Tag = d;
@@ -243,7 +243,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString());
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.PackageVersionCount.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString());
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString());
                 li.Tag = d;
@@ -273,7 +273,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString());
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.PackageVersionCount.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString());
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString());
                 li.Tag = d;

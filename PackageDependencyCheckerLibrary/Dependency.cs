@@ -9,10 +9,10 @@ public class Dependency
     public string Framework { get; internal set; }
 
     public Dependency(string projectName, string packageName, string packageVersion, string framework)
-        {
-            ProjectName = projectName;
-            PackageName = packageName;
-            PackageVersion = packageVersion;
-            Framework = framework;
+    {
+        ProjectName = projectName;
+        PackageName = packageName;
+        PackageVersion = packageVersion;
+        Framework = framework;
     }
 }
