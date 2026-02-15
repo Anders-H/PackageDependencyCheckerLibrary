@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.Linq;
-#nullable enable
+
 namespace PackageDependencyCheckerLibrary.TreeStructure;
 
 public class CsProjectsFolder : INameAndCount
@@ -15,7 +15,7 @@ public class CsProjectsFolder : INameAndCount
         CsProjects = [];
     }
 
-    internal class DependencyInfoComparer : IEqualityComparer<DependencyInfo>
+    private class DependencyInfoProjectComparer : IEqualityComparer<DependencyInfo>
     {
         public bool Equals(DependencyInfo? x, DependencyInfo? y)
         {
@@ -34,7 +34,7 @@ public class CsProjectsFolder : INameAndCount
     internal void Load(DependencyInfoList list)
     {
         CsProjects.Clear();
-        var comparer = new DependencyInfoComparer();
+        var comparer = new DependencyInfoProjectComparer();
         var d = list.Distinct(comparer);
 
         foreach (var depInfo in d.OrderBy(x => x.ProjectName))

@@ -140,6 +140,15 @@ public partial class MainWindow : Form
                 node.Nodes.Add(childNode);
             }
         }
+        else if (item is FrameworksFolder frameworksFolder)
+        {
+            foreach (var framework in frameworksFolder.Frameworks)
+            {
+                var childNode = new TreeNode($"{framework.Name} ({framework.Usage.Count})");
+                childNode.Tag = framework;
+                node.Nodes.Add(childNode);
+            }
+        }
         else
         {
             throw new SystemException($"Unknown node type: {item.GetType().Name}");
@@ -156,10 +165,11 @@ public partial class MainWindow : Form
             return;
         }
 
-        if (n.Tag is CsProjectsFolder || n.Tag is ComponentsFolder)
+        if (n.Tag is CsProjectsFolder || n.Tag is ComponentsFolder || n.Tag is FrameworksFolder)
         {
             var p = n.Tag as CsProjectsFolder;
             var c = n.Tag as ComponentsFolder;
+            var f = n.Tag as FrameworksFolder;
 
             listView1.BeginUpdate();
             listView1.Items.Clear();
@@ -179,6 +189,8 @@ public partial class MainWindow : Form
                 dep.AddRange(_data.OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ToList());
             else if (c != null)
                 dep.AddRange(_data.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ThenBy(x => x.ProjectName).ToList());
+            else if (f != null)
+                dep.AddRange(_data.OrderBy(x => x.Framework).ThenBy(x => x.ProjectName).ToList());
 
             foreach (var d in dep)
             {
@@ -274,6 +286,32 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageNameCount.ToString());
                 li.SubItems.Add(d.PackageVersion);
                 li.SubItems.Add(d.GetVersions().Count.ToString());
+                li.SubItems.Add(d.Framework);
+                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.Tag = d;
+                listView1.Items.Add(li);
+            }
+
+            listView1.EndUpdate();
+        }
+        else if (n.Tag is ComponentVersion version)
+        {
+            listView1.BeginUpdate();
+            listView1.Items.Clear();
+            listView1.Columns.Clear();
+            listView1.Columns.Add("Project Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Package Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Framework", 140);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+
+            foreach (var d in _data.Where(x => x.PackageName == version.Name && x.PackageVersion == version.VersionString).OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+            {
+                var li = new ListViewItem(d.ProjectName);
+                li.SubItems.Add(d.ProjectNameCount.ToString());
+                li.SubItems.Add(d.PackageName);
+                li.SubItems.Add(d.PackageNameCount.ToString());
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString());
                 li.Tag = d;

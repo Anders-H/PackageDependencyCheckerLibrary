@@ -29,6 +29,10 @@ public class MultiProjectDependencyChecker
         componentsFolder.Load(data);
         result.Add(componentsFolder);
 
+        var frameworksFolder = new FrameworksFolder();
+        frameworksFolder.Load(data);
+        result.Add(frameworksFolder);
+
         return result;
     }
 
@@ -42,9 +46,9 @@ public class MultiProjectDependencyChecker
 
         foreach (var d in list)
         {
-            d.ProjectNameCount = list.Count(x => x.ProjectName == d.ProjectName);
-            d.PackageNameCount = list.Count(x => x.PackageName == d.PackageName);
-            d.FrameworkCount = list.Count(x => x.Framework == d.Framework);
+            d.ProjectNameCount = list.CountProjects();
+            d.PackageNameCount = list.CountPackages();
+            d.FrameworkCount = list.CountFrameworks();
         }
 
         var result = new DependencyInfoList();

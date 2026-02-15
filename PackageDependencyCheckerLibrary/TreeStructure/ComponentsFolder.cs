@@ -15,7 +15,7 @@ public class ComponentsFolder : INameAndCount
         Components = [];
     }
 
-    internal class DependencyInfoComparer : IEqualityComparer<DependencyInfo>
+    private class DependencyInfoPackageComparer : IEqualityComparer<DependencyInfo>
     {
         public bool Equals(DependencyInfo? x, DependencyInfo? y)
         {
@@ -34,7 +34,7 @@ public class ComponentsFolder : INameAndCount
     internal void Load(DependencyInfoList list)
     {
         Components.Clear();
-        var comparer = new DependencyInfoComparer();
+        var comparer = new DependencyInfoPackageComparer();
         var d = list.Distinct(comparer);
 
         foreach (var depInfo in d.OrderBy(x => x.PackageName))

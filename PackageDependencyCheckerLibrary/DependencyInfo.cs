@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using PackageDependencyCheckerLibrary.TreeStructure;
-using System;
 using System.Linq;
 
 namespace PackageDependencyCheckerLibrary;
