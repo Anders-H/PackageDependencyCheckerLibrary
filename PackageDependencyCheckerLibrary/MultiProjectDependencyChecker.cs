@@ -22,7 +22,7 @@ public class MultiProjectDependencyChecker
         var result = new RootFolder();
 
         var csProjectFolder = new CsProjectsFolder();
-        csProjectFolder.Load(data);
+        var projects = csProjectFolder.Load(data);
         result.Add(csProjectFolder);
         
         var componentsFolder = new ComponentsFolder();
@@ -30,7 +30,7 @@ public class MultiProjectDependencyChecker
         result.Add(componentsFolder);
 
         var frameworksFolder = new FrameworksFolder();
-        frameworksFolder.Load(data);
+        frameworksFolder.Load(projects);
         result.Add(frameworksFolder);
 
         return result;

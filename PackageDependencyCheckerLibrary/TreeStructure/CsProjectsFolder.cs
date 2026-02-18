@@ -31,7 +31,7 @@ public class CsProjectsFolder : INameAndCount
             obj.ProjectName.GetHashCode();
     }
 
-    internal void Load(DependencyInfoList list)
+    internal CsProjectList Load(DependencyInfoList list)
     {
         CsProjects.Clear();
         var comparer = new DependencyInfoProjectComparer();
@@ -39,9 +39,11 @@ public class CsProjectsFolder : INameAndCount
 
         foreach (var depInfo in d.OrderBy(x => x.ProjectName))
         {
-            var csProject = new CsProject(depInfo.ProjectName);
+            var csProject = new CsProject(depInfo.ProjectName, depInfo.Framework);
             csProject.Dependencies.AddRange(list.Where(x => x.ProjectName == depInfo.ProjectName));
             CsProjects.Add(csProject);
         }
+
+        return CsProjects;
     }
 }

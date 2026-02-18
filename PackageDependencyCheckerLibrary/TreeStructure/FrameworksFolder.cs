@@ -14,19 +14,17 @@ public class FrameworksFolder : INameAndCount
         Frameworks = [];
     }
 
-    internal void Load(DependencyInfoList list)
+    internal void Load(CsProjectList projects)
     {
         Frameworks.Clear();
         var d = new FrameworkList();
 
-        foreach (var l in list)
-            d.AddIfNotExists(new Framework(l.Framework, l.FrameworkCount));
+        foreach (var p in projects)
+            d.AddIfNotExists(new Framework(p.Framework, p.GetFrameworkCount(projects)));
 
         Frameworks.AddRange(d.OrderBy(x => x.Name));
 
         foreach (var f in d.OrderBy(x => x.Name))
-        {
-            f.Usage.AddRange(list.Where(x => x.Framework == f.Name).OrderBy(x => x.ProjectName));
-        }
+            f.Usage.AddRange(projects.Where(x => x.Framework == f.Name).OrderBy(x => x.Name));
     }
 }
