@@ -57,4 +57,25 @@ public class DependencyInfo : Dependency
             return new ComponentVersion(PackageName, "1.0");
         }
     }
+
+    public void CountProjects(DependencyInfoList list)
+    {
+        var s = new StringList();
+
+        foreach (var dependency in list)
+        {
+            if (dependency.ProjectName == PackageName)
+                s.Add(dependency.PackageName);
+        }
+
+        ProjectNameCount = s.Count;
+    }
+
+    public void CountPackages(DependencyInfoList list)
+    {
+    }
+
+    public void CountFrameworks(DependencyInfoList list)
+    {
+    }
 }

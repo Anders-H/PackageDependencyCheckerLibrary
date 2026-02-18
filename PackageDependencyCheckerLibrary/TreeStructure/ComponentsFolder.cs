@@ -42,6 +42,9 @@ public class ComponentsFolder : INameAndCount
             var component = new Component(depInfo.PackageName);
             component.Usage.AddRange(list.Where(x => x.PackageName == depInfo.PackageName));
             Components.Add(component);
+
+            foreach (var item in list.Where(item => item.PackageName == depInfo.PackageName))
+                item.PackageNameCount = component.Usage.Count;
         }
     }
 }

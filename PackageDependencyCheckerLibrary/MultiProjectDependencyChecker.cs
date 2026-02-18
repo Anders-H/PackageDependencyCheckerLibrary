@@ -46,9 +46,9 @@ public class MultiProjectDependencyChecker
 
         foreach (var d in list)
         {
-            d.ProjectNameCount = list.CountProjects();
-            d.PackageNameCount = list.CountPackages();
-            d.FrameworkCount = list.CountFrameworks();
+            d.CountProjects(list);
+            d.CountPackages(list);
+            d.CountFrameworks(list);
         }
 
         var result = new DependencyInfoList();
