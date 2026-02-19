@@ -9,11 +9,13 @@ namespace PackageDependencies;
 
 public partial class MainWindow : Form
 {
+    private readonly ListViewColumnSorter _columnSorter;
     private DependencyInfoList _data;
     public const string ApplicationName = "Package Dependencies";
     
     public MainWindow()
     {
+        _columnSorter = new ListViewColumnSorter();
         _data = [];
         InitializeComponent();
     }
@@ -195,13 +197,13 @@ public partial class MainWindow : Form
             foreach (var d in dep)
             {
                 var li = new ListViewItem(d.ProjectName);
-                li.SubItems.Add(d.ProjectNameCount.ToString());
+                li.SubItems.Add(d.ProjectNameCount.ToString()).Tag = d.ProjectNameCount;
                 li.SubItems.Add(d.PackageName);
-                li.SubItems.Add(d.PackageNameCount.ToString());
+                li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
                 li.SubItems.Add(d.Framework);
-                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
                 listView1.Items.Add(li);
             }
@@ -223,11 +225,11 @@ public partial class MainWindow : Form
             foreach (var d in csProject.Dependencies.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
             {
                 var li = new ListViewItem(d.PackageName);
-                li.SubItems.Add(d.PackageNameCount.ToString());
+                li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
                 li.SubItems.Add(d.Framework);
-                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
                 listView1.Items.Add(li);
             }
@@ -248,16 +250,22 @@ public partial class MainWindow : Form
             listView1.Columns.Add("Framework", 140);
             listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
 
-            foreach (var d in _data.Where(x => x.PackageName == depInfo.PackageName).OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+            var theSet = _data
+                .Where(x => x.PackageName == depInfo.PackageName)
+                .OrderBy(x => x.ProjectName)
+                .ThenBy(x => x.PackageName)
+                .ThenBy(x => x.PackageVersion);
+
+            foreach (var d in theSet)
             {
                 var li = new ListViewItem(d.ProjectName);
-                li.SubItems.Add(d.ProjectNameCount.ToString());
+                li.SubItems.Add(d.ProjectNameCount.ToString()).Tag = d.ProjectNameCount;
                 li.SubItems.Add(d.PackageName);
-                li.SubItems.Add(d.PackageNameCount.ToString());
+                li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
                 li.SubItems.Add(d.Framework);
-                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
                 listView1.Items.Add(li);
             }
@@ -278,16 +286,22 @@ public partial class MainWindow : Form
             listView1.Columns.Add("Framework", 140);
             listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
 
-            foreach (var d in _data.Where(x => x.PackageName == component.Name).OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+            var theSet = _data
+                .Where(x => x.PackageName == component.Name)
+                .OrderBy(x => x.ProjectName)
+                .ThenBy(x => x.PackageName)
+                .ThenBy(x => x.PackageVersion);
+
+            foreach (var d in theSet)
             {
                 var li = new ListViewItem(d.ProjectName);
-                li.SubItems.Add(d.ProjectNameCount.ToString());
+                li.SubItems.Add(d.ProjectNameCount.ToString()).Tag = d.ProjectNameCount;
                 li.SubItems.Add(d.PackageName);
-                li.SubItems.Add(d.PackageNameCount.ToString());
+                li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString());
+                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
                 li.SubItems.Add(d.Framework);
-                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
                 listView1.Items.Add(li);
             }
@@ -306,14 +320,20 @@ public partial class MainWindow : Form
             listView1.Columns.Add("Framework", 140);
             listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
 
-            foreach (var d in _data.Where(x => x.PackageName == version.Name && x.PackageVersion == version.VersionString).OrderBy(x => x.ProjectName).ThenBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+            var theSet = _data
+                .Where(x => x.PackageName == version.Name && x.PackageVersion == version.VersionString)
+                .OrderBy(x => x.ProjectName)
+                .ThenBy(x => x.PackageName)
+                .ThenBy(x => x.PackageVersion);
+
+            foreach (var d in theSet)
             {
                 var li = new ListViewItem(d.ProjectName);
-                li.SubItems.Add(d.ProjectNameCount.ToString());
+                li.SubItems.Add(d.ProjectNameCount.ToString()).Tag = d.ProjectNameCount;
                 li.SubItems.Add(d.PackageName);
-                li.SubItems.Add(d.PackageNameCount.ToString());
+                li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.Framework);
-                li.SubItems.Add(d.FrameworkCount.ToString());
+                li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
                 listView1.Items.Add(li);
             }
@@ -324,5 +344,23 @@ public partial class MainWindow : Form
         {
             throw new SystemException($"Unknown node type: {n.Tag.GetType().Name}");
         }
+    }
+
+    private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+    {
+        _columnSorter.SortColumn = e.Column;
+
+        if (_columnSorter.SortColumn == _columnSorter.LastSortColumn)
+        {
+            _columnSorter.SortOrder = _columnSorter.SortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+        }
+        else
+        {
+            _columnSorter.SortOrder = SortOrder.Ascending;
+        }
+
+        listView1.ListViewItemSorter = _columnSorter;
+        listView1.Sort();
+        _columnSorter.LastSortColumn = _columnSorter.SortColumn;
     }
 }
