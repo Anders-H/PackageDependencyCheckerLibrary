@@ -25,7 +25,7 @@ public class CsProjectsFolder : INameAndCount
             if (x is null || y is null)
                 return false;
 
-            return x.ProjectName == y.ProjectName;
+            return x.ProjectName == y.ProjectName && x.Framework == y.Framework;
         }
         public int GetHashCode(DependencyInfo obj) =>
             obj.ProjectName.GetHashCode();

@@ -19,4 +19,7 @@ public class CsProject : INameAndCount
 
     public int GetFrameworkCount(CsProjectList projects) =>
         projects.Count(x => x.Framework == Framework);
+
+    public override string ToString() =>
+        $"{Name} ({Framework})";
 }

@@ -37,9 +37,6 @@ public class DependencyChecker
         {
             var nameOnly = fileInfo.Name.Substring(0, fileInfo.Name.Length - 7);
             var framework = "";
-//            var contents = $@"<?xml version = ""1.0"" encoding = ""UTF-8"" standalone = ""yes"" ?>
-//{File.ReadAllText(fileInfo.FullName)}
-//";
             var dom = new XmlDocument();
             dom.LoadXml(File.ReadAllText(fileInfo.FullName));
             var doc = dom.DocumentElement;

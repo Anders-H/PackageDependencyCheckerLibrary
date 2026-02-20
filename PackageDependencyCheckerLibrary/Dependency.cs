@@ -6,7 +6,6 @@ public class Dependency
     public string ProjectName { get; }
     public string PackageName { get; }
     public string PackageVersion { get; }
-    public string Framework { get; internal set; }
 
     public Dependency(string projectName, string packageName, string packageVersion, string framework)
     {
@@ -14,5 +13,11 @@ public class Dependency
         PackageName = packageName;
         PackageVersion = packageVersion;
         Framework = framework;
+    }
+
+    public string Framework
+    {
+        get;
+        set => field = value.StartsWith(".") ? value.Substring(1) : value;
     }
 }

@@ -23,7 +23,7 @@ public class DependencyInfo : Dependency
     }
 
     public ComponentVersionList GetVersions() =>
-    _versions ?? [];
+        _versions ?? [];
 
     internal ComponentVersionList GetVersions(DependencyInfoList all)
     {
