@@ -31,10 +31,7 @@ public class ListViewColumnSorter : IComparer
 
     private int DoCompare(object x, object y)
     {
-        var left = x as ListViewItem;
-        var right = y as ListViewItem;
-
-        if (left == null || right == null)
+        if (x is not ListViewItem left || y is not ListViewItem right)
             return 0;
 
         if (SortColumn <= 0)
@@ -43,19 +40,15 @@ public class ListViewColumnSorter : IComparer
         if (left.SubItems[SortColumn].Tag == null || right.SubItems[SortColumn].Tag == null)
             return string.Compare(left.SubItems[SortColumn].Text, right.SubItems[SortColumn].Text, StringComparison.CurrentCultureIgnoreCase);
 
-        var leftInt = left.SubItems[SortColumn].Tag as int?;
-        var rightInt = right.SubItems[SortColumn].Tag as int?;
-
-        if (!leftInt.HasValue || !rightInt.HasValue)
+        if (left.SubItems[SortColumn].Tag is not int leftInt || right.SubItems[SortColumn].Tag is not int rightInt)
             return string.Compare(left.Text, right.Text, StringComparison.CurrentCultureIgnoreCase);
 
-        if (leftInt!.Value > rightInt!.Value)
+        if (((int?)leftInt)!.Value > ((int?)rightInt)!.Value)
             return 1;
         
-        if (leftInt.Value < rightInt.Value)
+        if (leftInt < rightInt)
             return -1;
 
         return 0;
     }
-
 }

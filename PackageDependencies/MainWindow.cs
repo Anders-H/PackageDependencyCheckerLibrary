@@ -340,6 +340,41 @@ public partial class MainWindow : Form
 
             listView1.EndUpdate();
         }
+        else if (n.Tag is Framework framework)
+        {
+            listView1.BeginUpdate();
+            listView1.Items.Clear();
+            listView1.Columns.Clear();
+            listView1.Columns.Add("Project Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Package Name", 190);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Package Version", 140);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+            listView1.Columns.Add("Framework", 140);
+            listView1.Columns.Add("Count", 50, HorizontalAlignment.Center);
+
+            var theSet = _data
+                .Where(x => x.Framework == framework.Name)
+                .OrderBy(x => x.Framework)
+                .ThenBy(x => x.ProjectName);
+
+            foreach (var d in theSet)
+            {
+                var li = new ListViewItem(d.ProjectName);
+                li.SubItems.Add(d.ProjectNameCount.ToString()).Tag = d.ProjectNameCount;
+                li.SubItems.Add(d.PackageName);
+                li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
+                li.SubItems.Add(d.PackageVersion);
+                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
+                li.SubItems.Add(d.Framework);
+                li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
+                li.Tag = d;
+                listView1.Items.Add(li);
+            }
+
+            listView1.EndUpdate();
+        }
         else
         {
             throw new SystemException($"Unknown node type: {n.Tag.GetType().Name}");
