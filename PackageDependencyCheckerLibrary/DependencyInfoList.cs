@@ -10,6 +10,6 @@ public class DependencyInfoList : List<DependencyInfo>
         this.Count(x => x.PackageName == packageName);
 
     public int GetProjectCount(DependencyInfo dependencyInfo) =>
-        this.Count(x => x.ProjectName == dependencyInfo.ProjectName
+        this.Count(x => x.SourceFilename == dependencyInfo.SourceFilename
             && x.Framework == dependencyInfo.Framework);
 }

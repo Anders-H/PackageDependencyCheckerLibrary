@@ -25,7 +25,7 @@ public class CsProjectsFolder : INameAndCount
             if (x is null || y is null)
                 return false;
 
-            return x.ProjectName == y.ProjectName && x.Framework == y.Framework;
+            return x.SourceFilename == y.SourceFilename;
         }
         public int GetHashCode(DependencyInfo obj) =>
             obj.ProjectName.GetHashCode();
@@ -40,7 +40,7 @@ public class CsProjectsFolder : INameAndCount
         foreach (var depInfo in d.OrderBy(x => x.ProjectName))
         {
             var csProject = new CsProject(depInfo.ProjectName, depInfo.Framework);
-            csProject.Dependencies.AddRange(list.Where(x => x.ProjectName == depInfo.ProjectName));
+            csProject.Dependencies.AddRange(list.Where(x => x.SourceFilename == depInfo.SourceFilename));
             CsProjects.Add(csProject);
         }
 

@@ -93,7 +93,7 @@ public class DependencyChecker
                         version = "[Read error]";
                     }
 
-                    dependencies.Add(new Dependency(nameOnly, include, version, framework));
+                    dependencies.Add(new Dependency(fileInfo.FullName, nameOnly, include, version, framework));
                 }
             }
 

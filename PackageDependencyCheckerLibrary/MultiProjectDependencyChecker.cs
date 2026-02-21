@@ -51,17 +51,13 @@ public class MultiProjectDependencyChecker
             list.AddRange(dependencies.GetDependencies().Select(dependency => new DependencyInfo(dependency)));
 
         foreach (var d in list)
-        {
             d.CountProjects(list);
-            d.CountPackages(list);
-            d.CountFrameworks(list);
-        }
 
         var result = new DependencyInfoList();
         result.AddRange(list.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ThenBy(x => x.ProjectName));
 
         foreach (var d in result)
-            _ = d.GetVersions(result);
+            _ = d.GetUsagePerVersion(result);
 
         return result;
     }

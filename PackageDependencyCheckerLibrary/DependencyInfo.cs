@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.IO;
 using PackageDependencyCheckerLibrary.TreeStructure;
 using System.Linq;
 
@@ -6,44 +7,44 @@ namespace PackageDependencyCheckerLibrary;
 
 public class DependencyInfo : Dependency
 {
-    private ComponentVersionList? _versions;
+    private ComponentVersionList? _usagePerVersion;
     public int ProjectNameCount { get; set; }
     public int PackageNameCount { get; set; }
     public int FrameworkCount { get; set; }
 
-    public DependencyInfo(string projectName, string packageName, string packageVersion, string framework) : base(projectName, packageName, packageVersion, framework)
+    public DependencyInfo(string sourceFilename, string projectName, string packageName, string packageVersion, string framework) : base(sourceFilename, projectName, packageName, packageVersion, framework)
     {
         ProjectNameCount = 0;
         PackageNameCount = 0;
         FrameworkCount = 0;
     }
 
-    public DependencyInfo(Dependency dependency) : this(dependency.ProjectName, dependency.PackageName, dependency.PackageVersion, dependency.Framework)
+    public DependencyInfo(Dependency dependency) : this(dependency.SourceFilename, dependency.ProjectName, dependency.PackageName, dependency.PackageVersion, dependency.Framework)
     {
     }
 
-    public ComponentVersionList GetVersions() =>
-        _versions ?? [];
+    public ComponentVersionList GetUsagePerVersion() =>
+        _usagePerVersion ?? [];
 
-    internal ComponentVersionList GetVersions(DependencyInfoList all)
+    internal ComponentVersionList GetUsagePerVersion(DependencyInfoList all)
     {
-        if (_versions == null)
+        if (_usagePerVersion != null)
+            return _usagePerVersion;
+
+        var versions = new ComponentVersionList();
+
+        foreach (var component in all.Where(x => x.PackageName == PackageName))
         {
-            var versions = new ComponentVersionList();
-
-            foreach (var component in all.Where(x => x.PackageName == PackageName))
-            {
-                var version = component.GetVersion();
-                versions.AddIfNotExists(version);
-            }
-
-            _versions = [];
-
-            foreach (var version in versions.OrderBy(x => x.Major).ThenBy(x => x.Minor))
-                _versions.Add(version);
+            var version = component.GetVersion();
+            versions.AddIfNotExists(version);
         }
 
-        return _versions;
+        _usagePerVersion = [];
+
+        foreach (var version in versions.OrderBy(x => x.Major).ThenBy(x => x.Minor))
+            _usagePerVersion.Add(version);
+
+        return _usagePerVersion;
     }
 
     public ComponentVersion GetVersion()
@@ -64,18 +65,40 @@ public class DependencyInfo : Dependency
 
         foreach (var dependency in list)
         {
-            if (dependency.ProjectName == PackageName)
+            if (dependency.PackageName == PackageName)
                 s.Add(dependency.PackageName);
         }
 
         ProjectNameCount = s.Count;
     }
 
-    public void CountPackages(DependencyInfoList list)
+    public string GetLastUpdateString()
     {
+        try
+        {
+            var fi = new FileInfo(SourceFilename);
+
+            if (!fi.Exists)
+                return "File not found.";
+
+            var d = fi.LastWriteTime;
+            return d.ToString("yyyy-MM-dd (HH:mm)");
+        }
+        catch
+        {
+            return "Failed to get last update date.";
+        }
     }
 
-    public void CountFrameworks(DependencyInfoList list)
+    public DependencyInfoList GetNumberOfVersions(DependencyInfoList all)
     {
+        var result = new DependencyInfoList();
+
+        foreach (var component in all)
+        {
+
+        }
+
+        return result;
     }
 }

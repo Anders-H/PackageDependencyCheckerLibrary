@@ -114,7 +114,7 @@ public partial class MainWindow : Form
         {
             foreach (var dependency in csProject.Dependencies)
             {
-                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.GetVersions().Count}, usage: {_data.GetUsageCount(dependency.PackageName)})");
+                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.GetUsagePerVersion().Count}, usage: {_data.GetUsageCount(dependency.PackageName)})");
                 childNode.Tag = dependency;
                 node.Nodes.Add(childNode);
             }
@@ -201,7 +201,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
+                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -227,7 +227,7 @@ public partial class MainWindow : Form
                 var li = new ListViewItem(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
+                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -263,7 +263,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
+                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -299,7 +299,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
+                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -366,7 +366,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetVersions().Count.ToString()).Tag = d.GetVersions().Count;
+                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -397,5 +397,39 @@ public partial class MainWindow : Form
         listView1.ListViewItemSorter = _columnSorter;
         listView1.Sort();
         _columnSorter.LastSortColumn = _columnSorter.SortColumn;
+    }
+
+    private void listView1_KeyPress(object sender, KeyPressEventArgs e)
+    {
+        if (e.KeyChar == (char)Keys.Return)
+            projectPropertiesToolStripMenuItem_Click(sender, e);
+    }
+
+    private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+    {
+        var item = listView1.GetItemAt(e.X, e.Y);
+
+        if (item != null)
+            projectPropertiesToolStripMenuItem_Click(sender, e);
+    }
+
+    private void projectPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (listView1.SelectedItems.Count <= 0)
+        {
+            MessageBox.Show(this, @"No project is selected.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        if (listView1.SelectedItems[0].Tag is not DependencyInfo depInfo)
+        {
+            MessageBox.Show(this, @"The selected item does not contain dependency information.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        using var x = new ProjectPropertiesDialog();
+        x.DependencyInfoList = _data;
+        x.Project = depInfo;
+        x.ShowDialog(this);
     }
 }
