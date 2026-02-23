@@ -39,6 +39,7 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.lblComponents = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnOpenFolder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -134,12 +135,22 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(500, 364);
+            this.btnClose.Location = new System.Drawing.Point(488, 364);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 10;
+            this.btnClose.Size = new System.Drawing.Size(87, 23);
+            this.btnClose.TabIndex = 11;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            // 
+            // btnOpenFolder
+            // 
+            this.btnOpenFolder.Location = new System.Drawing.Point(8, 364);
+            this.btnOpenFolder.Name = "btnOpenFolder";
+            this.btnOpenFolder.Size = new System.Drawing.Size(87, 23);
+            this.btnOpenFolder.TabIndex = 10;
+            this.btnOpenFolder.Text = "Open folder";
+            this.btnOpenFolder.UseVisualStyleBackColor = true;
+            this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
             // 
             // ProjectPropertiesDialog
             // 
@@ -147,6 +158,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(584, 394);
+            this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.txtFramework);
@@ -185,5 +197,6 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Label lblComponents;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnOpenFolder;
     }
 }

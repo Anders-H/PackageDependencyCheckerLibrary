@@ -89,16 +89,4 @@ public class DependencyInfo : Dependency
             return "Failed to get last update date.";
         }
     }
-
-    public DependencyInfoList GetNumberOfVersions(DependencyInfoList all)
-    {
-        var result = new DependencyInfoList();
-
-        foreach (var component in all)
-        {
-
-        }
-
-        return result;
-    }
 }

@@ -1,6 +1,8 @@
 ﻿#nullable enable
 using PackageDependencyCheckerLibrary;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -37,11 +39,10 @@ public partial class ProjectPropertiesDialog : Form
         listView1.BeginUpdate();
         listView1.Items.Clear();
         listView1.Columns.Clear();
-        listView1.Columns.Add("Package Name", 190);
-        listView1.Columns.Add("Total usage", 85, HorizontalAlignment.Center);
-        listView1.Columns.Add("Package Version", 100);
-        listView1.Columns.Add("Version usage", 85, HorizontalAlignment.Center);
-        listView1.Columns.Add("Versions", 85, HorizontalAlignment.Center);
+        listView1.Columns.Add("Package Name", 210);
+        listView1.Columns.Add("Total usage", 100, HorizontalAlignment.Center);
+        listView1.Columns.Add("Package Version", 110);
+        listView1.Columns.Add("Version usage", 100, HorizontalAlignment.Center);
 
         var theSet = DependencyInfoList
             .Where(x => x.SourceFilename == Project.SourceFilename)
@@ -57,8 +58,6 @@ public partial class ProjectPropertiesDialog : Form
             li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
             li.SubItems.Add(d.PackageVersion);
             li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
-            var numberOfVersions = d.GetNumberOfVersions(DependencyInfoList).Count;
-            li.SubItems.Add(numberOfVersions.ToString()).Tag = numberOfVersions;
             li.Tag = d;
             listView1.Items.Add(li);
         }
@@ -82,5 +81,18 @@ public partial class ProjectPropertiesDialog : Form
         listView1.ListViewItemSorter = _columnSorter;
         listView1.Sort();
         _columnSorter.LastSortColumn = _columnSorter.SortColumn;
+    }
+
+    private void btnOpenFolder_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var di = new FileInfo(Project!.SourceFilename).Directory;
+            Process.Start(di!.FullName);
+        }
+        catch
+        {
+            MessageBox.Show(this, @"Failed to open folder.", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

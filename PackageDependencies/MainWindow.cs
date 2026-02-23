@@ -432,4 +432,54 @@ public partial class MainWindow : Form
         x.Project = depInfo;
         x.ShowDialog(this);
     }
+
+    private void exportCSVToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        using var saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filter = @"CSV files (*.csv)|*.csv";
+        saveFileDialog.Title = @"Export to CSV";
+
+        if (saveFileDialog.ShowDialog(this) != DialogResult.OK)
+            return;
+
+        try
+        {
+            using var sw = new System.IO.StreamWriter(saveFileDialog.FileName);
+            sw.Write(_data.GetCsv());
+            sw.Flush();
+            sw.Close();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, $@"An error occurred while exporting to CSV: {exception.Message} ({exception.GetType().Name})", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void exportXMLToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void printToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        foreach (var form in Application.OpenForms)
+        {
+            if (form is PrintDocumentWindow p)
+            {
+                p.BringToFront();
+                p.Activate();
+                p.GeneratePreview(_data);
+                return;
+            }
+        }
+
+        var x = new PrintDocumentWindow();
+        x.Show();
+        x.GeneratePreview(_data);
+    }
 }

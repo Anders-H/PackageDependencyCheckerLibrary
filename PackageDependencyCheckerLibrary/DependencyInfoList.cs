@@ -12,4 +12,9 @@ public class DependencyInfoList : List<DependencyInfo>
     public int GetProjectCount(DependencyInfo dependencyInfo) =>
         this.Count(x => x.SourceFilename == dependencyInfo.SourceFilename
             && x.Framework == dependencyInfo.Framework);
+
+    public string GetCsv()
+    {
+        return "hello!";
+    }
 }
