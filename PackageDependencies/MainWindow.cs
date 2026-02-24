@@ -457,12 +457,68 @@ public partial class MainWindow : Form
 
     private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
     {
+        using var saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filter = @"JSON files (*.json)|*.json";
+        saveFileDialog.Title = @"Export to JSON";
 
+        if (saveFileDialog.ShowDialog(this) != DialogResult.OK)
+            return;
+
+        try
+        {
+            using var sw = new System.IO.StreamWriter(saveFileDialog.FileName);
+            sw.Write(_data.GetJson());
+            sw.Flush();
+            sw.Close();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, $@"An error occurred while exporting to JSON: {exception.Message} ({exception.GetType().Name})", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private void exportXMLToolStripMenuItem_Click(object sender, EventArgs e)
     {
+        using var saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filter = @"XML files (*.xml)|*.xml";
+        saveFileDialog.Title = @"Export to XML";
 
+        if (saveFileDialog.ShowDialog(this) != DialogResult.OK)
+            return;
+
+        try
+        {
+            using var sw = new System.IO.StreamWriter(saveFileDialog.FileName);
+            sw.Write(_data.GetXml());
+            sw.Flush();
+            sw.Close();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, $@"An error occurred while exporting to XML: {exception.Message} ({exception.GetType().Name})", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void exportFixedWidthTextToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        using var saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filter = @"TXT files (*.txt)|*.txt";
+        saveFileDialog.Title = @"Export to fixed width text";
+
+        if (saveFileDialog.ShowDialog(this) != DialogResult.OK)
+            return;
+
+        try
+        {
+            using var sw = new System.IO.StreamWriter(saveFileDialog.FileName);
+            sw.Write(_data.GetFixedWidthText());
+            sw.Flush();
+            sw.Close();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, $@"An error occurred while exporting to fixed width text: {exception.Message} ({exception.GetType().Name})", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private void printToolStripMenuItem_Click(object sender, EventArgs e)

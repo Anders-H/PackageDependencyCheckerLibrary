@@ -48,6 +48,6 @@ Framework: net8.0-windows (47)
 
 ## Sample program
 
-PackageDependencies is a sample program written in .NET Framework 4.8.
+PackageDependencies is a sample program written in C# using .NET Framework 4.8 so that it will run on any patched Windows machine.
 
 ![screenshot](screenshot.jpg)
