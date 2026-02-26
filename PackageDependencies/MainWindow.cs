@@ -527,15 +527,15 @@ public partial class MainWindow : Form
         {
             if (form is PrintDocumentWindow p)
             {
+                p.Dependencies = _data;
                 p.BringToFront();
                 p.Activate();
-                p.GeneratePreview(_data);
                 return;
             }
         }
 
         var x = new PrintDocumentWindow();
+        x.Dependencies = _data;
         x.Show();
-        x.GeneratePreview(_data);
     }
 }
