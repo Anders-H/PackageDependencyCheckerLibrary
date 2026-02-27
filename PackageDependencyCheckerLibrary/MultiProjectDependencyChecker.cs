@@ -36,9 +36,6 @@ public class MultiProjectDependencyChecker
         foreach (var d in data)
             d.FrameworkCount = frameworksFolder.Frameworks.GetCount(d);
 
-        foreach (var d in data)
-            d.ProjectNameCount = data.GetProjectCount(d);
-
         return result;
     }
 

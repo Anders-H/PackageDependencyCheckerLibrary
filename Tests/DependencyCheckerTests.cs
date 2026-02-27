@@ -50,10 +50,19 @@ public sealed class DependencyCheckerTests
         const string folder = @"D:\GitRepos";
         var x = new MultiProjectDependencyChecker(folder);
         var response = x.GetDependencyInfoList();
-
+        
         foreach (var r in response)
             System.Diagnostics.Debug.WriteLine(@$"Name: {r.ProjectName} ({r.ProjectNameCount}),
 Package: {r.PackageName} ({r.PackageNameCount}), Version: {r.PackageVersion} ({r.GetUsagePerVersion().Count}),
 Framework: {r.Framework} ({r.FrameworkCount})");
+    }
+
+    [TestMethod]
+    public void SaveDependencyInfoList()
+    {
+        const string folder = @"D:\GitRepos";
+        var x = new MultiProjectDependencyChecker(folder);
+        var response = x.GetDependencyInfoList();
+        response.SaveFixedWidthText(@"C:\Users\hbom\Desktop\testrapport.txt");
     }
 }

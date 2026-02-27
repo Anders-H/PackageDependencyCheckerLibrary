@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -43,6 +44,19 @@ public class DependencyInfoList : List<DependencyInfo>
         return $@"{GetFixedWidthTextHeader()}
 {GetSeparator('=')}
 {GetFixedWidthTextRows(0, Count)}".Trim();
+    }
+
+    public bool SaveFixedWidthText(string targetFilename)
+    {
+        try
+        {
+            File.WriteAllText(targetFilename, GetFixedWidthText());
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public string GetFixedWidthTextHeader()

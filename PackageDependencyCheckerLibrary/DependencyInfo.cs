@@ -61,15 +61,15 @@ public class DependencyInfo : Dependency
 
     public void CountProjects(DependencyInfoList list)
     {
-        var s = new StringList();
+        var count = 0;
 
         foreach (var dependency in list)
         {
-            if (dependency.PackageName == PackageName)
-                s.Add(dependency.PackageName);
+            if (dependency.ProjectName == ProjectName && dependency.Framework == Framework)
+                count++;
         }
 
-        ProjectNameCount = s.Count;
+        ProjectNameCount = count;
     }
 
     public string GetLastUpdateString()
