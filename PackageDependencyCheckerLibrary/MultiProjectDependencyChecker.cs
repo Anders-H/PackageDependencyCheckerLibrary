@@ -1,9 +1,10 @@
 ﻿#nullable enable
+using PackageDependencyCheckerLibrary.TreeStructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using PackageDependencyCheckerLibrary.TreeStructure;
+using Component = PackageDependencyCheckerLibrary.TreeStructure.Component;
 
 namespace PackageDependencyCheckerLibrary;
 
@@ -33,9 +34,6 @@ public class MultiProjectDependencyChecker
         frameworksFolder.Load(projects);
         result.Add(frameworksFolder);
 
-        foreach (var d in data)
-            d.FrameworkCount = frameworksFolder.Frameworks.GetCount(d);
-
         return result;
     }
 
@@ -55,6 +53,34 @@ public class MultiProjectDependencyChecker
 
         foreach (var d in result)
             _ = d.GetUsagePerVersion(result);
+
+        var comparer = new DependencyInfoPackageComparer();
+        var distinctPackages = list.Distinct(comparer);
+
+        foreach (var depInfo in distinctPackages)
+        {
+            var component = new Component(depInfo.PackageName);
+            component.Usage.AddRange(list.Where(x => x.PackageName == depInfo.PackageName));
+
+            foreach (var item in list.Where(item => item.PackageName == depInfo.PackageName))
+                item.PackageNameCount = component.Usage.Count;
+        }
+
+        var projects = result.GetUniqueProjects();
+
+        foreach (var d in result)
+        {
+            var framework = d.Framework;
+            var count = 0;
+
+            foreach (var project in projects)
+            {
+                if (d.Framework == project.Framework)
+                    count++;
+            }
+
+            d.FrameworkCount = count;
+        }
 
         return result;
     }

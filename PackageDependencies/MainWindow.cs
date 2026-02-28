@@ -201,7 +201,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
+                li.SubItems.Add(d.PackageVersionCount.ToString()).Tag = d.PackageVersionCount;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -227,7 +227,7 @@ public partial class MainWindow : Form
                 var li = new ListViewItem(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
+                li.SubItems.Add(d.PackageVersionCount.ToString()).Tag = d.PackageVersionCount;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -263,7 +263,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
+                li.SubItems.Add(d.PackageVersionCount.ToString()).Tag = d.PackageVersionCount;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -299,7 +299,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
+                li.SubItems.Add(d.PackageVersionCount.ToString()).Tag = d.PackageVersionCount;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;
@@ -366,7 +366,7 @@ public partial class MainWindow : Form
                 li.SubItems.Add(d.PackageName);
                 li.SubItems.Add(d.PackageNameCount.ToString()).Tag = d.PackageNameCount;
                 li.SubItems.Add(d.PackageVersion);
-                li.SubItems.Add(d.GetUsagePerVersion().Count.ToString()).Tag = d.GetUsagePerVersion().Count;
+                li.SubItems.Add(d.PackageVersionCount.ToString()).Tag = d.PackageVersionCount;
                 li.SubItems.Add(d.Framework);
                 li.SubItems.Add(d.FrameworkCount.ToString()).Tag = d.FrameworkCount;
                 li.Tag = d;

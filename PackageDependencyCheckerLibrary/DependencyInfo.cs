@@ -10,12 +10,14 @@ public class DependencyInfo : Dependency
     private ComponentVersionList? _usagePerVersion;
     public int ProjectNameCount { get; set; }
     public int PackageNameCount { get; set; }
+    public int PackageVersionCount { get; set; }
     public int FrameworkCount { get; set; }
 
     public DependencyInfo(string sourceFilename, string projectName, string packageName, string packageVersion, string framework) : base(sourceFilename, projectName, packageName, packageVersion, framework)
     {
         ProjectNameCount = 0;
         PackageNameCount = 0;
+        PackageVersionCount = 0;
         FrameworkCount = 0;
     }
 
@@ -30,6 +32,11 @@ public class DependencyInfo : Dependency
     {
         if (_usagePerVersion != null)
             return _usagePerVersion;
+
+        PackageNameCount = 0;
+
+        foreach (var component in all.Where(x => x.PackageName == PackageName & x.PackageVersion == PackageVersion))
+            PackageVersionCount++;
 
         var versions = new ComponentVersionList();
 

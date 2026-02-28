@@ -115,7 +115,7 @@ public class DependencyInfoList : List<DependencyInfo>
 
             packageVersion = packageVersion.PadRight(PackageVersionLength);
 
-            var packageVersionCount = $"{d.GetUsagePerVersion().Count} ".PadLeft(PackageVersionCountLength);
+            var packageVersionCount = $"{d.PackageVersionCount} ".PadLeft(PackageVersionCountLength);
 
             var framework = d.Framework.Length >= FrameworkLength
                 ? d.Framework.Substring(0, FrameworkLength - 1)
@@ -129,5 +129,20 @@ public class DependencyInfoList : List<DependencyInfo>
         }
 
         return s;
+    }
+
+    internal List<ProjectWithFramework> GetUniqueProjects()
+    {
+        var projects = new List<ProjectWithFramework>();
+
+        foreach (var d in this)
+        {
+            var project = new ProjectWithFramework(d.ProjectName, d.Framework);
+            
+            if (!projects.Any(x => x.ProjectName == project.ProjectName && x.Framework == project.Framework))
+                projects.Add(project);
+        }
+
+        return projects;
     }
 }

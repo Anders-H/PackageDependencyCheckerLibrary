@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System.Collections.Generic;
 using System.Linq;
 
 namespace PackageDependencyCheckerLibrary.TreeStructure;
@@ -15,22 +14,6 @@ public class ComponentsFolder : INameAndCount
         Components = [];
     }
 
-    private class DependencyInfoPackageComparer : IEqualityComparer<DependencyInfo>
-    {
-        public bool Equals(DependencyInfo? x, DependencyInfo? y)
-        {
-            if (x == null && y == null)
-                return true;
-
-            if (x is null || y is null)
-                return false;
-
-            return x.PackageName == y.PackageName;
-        }
-        public int GetHashCode(DependencyInfo obj) =>
-            obj.PackageName.GetHashCode();
-    }
-
     internal void Load(DependencyInfoList list)
     {
         Components.Clear();
@@ -42,9 +25,6 @@ public class ComponentsFolder : INameAndCount
             var component = new Component(depInfo.PackageName);
             component.Usage.AddRange(list.Where(x => x.PackageName == depInfo.PackageName));
             Components.Add(component);
-
-            foreach (var item in list.Where(item => item.PackageName == depInfo.PackageName))
-                item.PackageNameCount = component.Usage.Count;
         }
     }
 }
