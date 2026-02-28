@@ -386,13 +386,9 @@ public partial class MainWindow : Form
         _columnSorter.SortColumn = e.Column;
 
         if (_columnSorter.SortColumn == _columnSorter.LastSortColumn)
-        {
             _columnSorter.SortOrder = _columnSorter.SortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
-        }
         else
-        {
             _columnSorter.SortOrder = SortOrder.Ascending;
-        }
 
         listView1.ListViewItemSorter = _columnSorter;
         listView1.Sort();
@@ -417,6 +413,25 @@ public partial class MainWindow : Form
     {
         if (listView1.SelectedItems.Count <= 0)
         {
+            var n = treeView1.SelectedNode;
+
+            if (n != null)
+            {
+                if (treeView1.SelectedNode.Tag is CsProject project)
+                {
+                    var dependencyInfo = _data.GetFirstProject(project);
+
+                    if (dependencyInfo != null)
+                    {
+                        using var y = new ProjectPropertiesDialog();
+                        y.DependencyInfoList = _data;
+                        y.Project = dependencyInfo;
+                        y.ShowDialog(this);
+                        return;
+                    }
+                }
+            }
+
             MessageBox.Show(this, @"No project is selected.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
         }

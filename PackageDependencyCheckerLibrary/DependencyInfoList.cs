@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PackageDependencyCheckerLibrary.TreeStructure;
 
 namespace PackageDependencyCheckerLibrary;
 
@@ -145,4 +146,7 @@ public class DependencyInfoList : List<DependencyInfo>
 
         return projects;
     }
+
+    public DependencyInfo? GetFirstProject(CsProject csProject) =>
+        this.FirstOrDefault(d => d.ProjectName == csProject.Name && d.Framework == csProject.Framework);
 }
