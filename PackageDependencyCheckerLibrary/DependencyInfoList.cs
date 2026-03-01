@@ -43,11 +43,6 @@ public class DependencyInfoList : List<DependencyInfo>
         return s.ToString();
     }
 
-    public string GetJson()
-    {
-        return "hello!";
-    }
-
     public string GetXml()
     {
         return "hello!";

@@ -482,7 +482,8 @@ public partial class MainWindow : Form
         try
         {
             using var sw = new System.IO.StreamWriter(saveFileDialog.FileName);
-            sw.Write(_data.GetJson());
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(_data);
+            sw.Write(json);
             sw.Flush();
             sw.Close();
         }
