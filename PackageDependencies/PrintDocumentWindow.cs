@@ -26,9 +26,17 @@ public partial class PrintDocumentWindow : Form
         if (Dependencies == null)
             throw new SystemException("Not correct initialized.");
 
-        btnPrevPage.Enabled = _currentPage > 0;
         var pageData = new List<string> { Dependencies.GetFixedWidthTextHeader() };
-        pageData.AddRange(GetPageData());
+        var data = GetPageData();
+
+        if (data.Count <= 0)
+        {
+            _hasMorePages = false;
+            e.HasMorePages = false;
+            return;
+        }
+
+        pageData.AddRange(data);
         printDocument1.DocumentName = "Package dependencies";
         var xStart = printDocument1.DefaultPageSettings.Margins.Left;
         var yStart = printDocument1.DefaultPageSettings.Margins.Top;
@@ -52,6 +60,13 @@ public partial class PrintDocumentWindow : Form
 
         yStart += yStep;
         e.Graphics.DrawString($"Page {_currentPage + 1}", _font, Brushes.Black, xStart, yStart);
+        _currentPage++;
+        e.HasMorePages = _hasMorePages;
+    }
+
+    public void InvalidatePreview()
+    {
+        printPreviewControl1.InvalidatePreview();
     }
 
     private List<string> GetPageData()
@@ -79,31 +94,19 @@ public partial class PrintDocumentWindow : Form
                 _hasMorePages = false;
         }
 
-        btnNextPage.Enabled = _hasMorePages;
         return response;
     }
 
-    private void btnPrevPage_Click(object sender, EventArgs e)
+    private void toolStripButton1_Click(object sender, EventArgs e)
     {
-        if (_currentPage > 0)
-        {
-            _currentPage--;
-            btnNextPage.Enabled = true;
-        }
+        using var p = new PrintDialog();
+        var result = p.ShowDialog(this);
 
-        btnPrevPage.Enabled = _currentPage > 0;
-        printPreviewControl1.InvalidatePreview();
-    }
+        if (result != DialogResult.OK)
+            return;
 
-    private void btnNextPage_Click(object sender, EventArgs e)
-    {
-        if (_hasMorePages)
-        {
-            _currentPage++;
-            btnPrevPage.Enabled = true;
-        }
-
-        printPreviewControl1.InvalidatePreview();
-        btnNextPage.Enabled = _hasMorePages;
+        _currentPage = 0;
+        printDocument1.PrinterSettings = p.PrinterSettings;
+        printDocument1.Print();
     }
 }

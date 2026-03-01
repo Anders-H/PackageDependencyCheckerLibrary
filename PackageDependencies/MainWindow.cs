@@ -543,8 +543,9 @@ public partial class MainWindow : Form
             if (form is PrintDocumentWindow p)
             {
                 p.Dependencies = _data;
-                p.BringToFront();
                 p.Activate();
+                p.BringToFront();
+                p.InvalidatePreview();
                 return;
             }
         }
@@ -552,5 +553,6 @@ public partial class MainWindow : Form
         var x = new PrintDocumentWindow();
         x.Dependencies = _data;
         x.Show();
+        x.BringToFront();
     }
 }
