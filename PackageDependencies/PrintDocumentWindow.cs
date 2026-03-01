@@ -101,6 +101,10 @@ public partial class PrintDocumentWindow : Form
     {
         using var p = new PrintDialog();
         var result = p.ShowDialog(this);
+        p.AllowCurrentPage = false;
+        p.AllowSomePages = false;
+        p.AllowSelection = false;
+        p.AllowPrintToFile = false;
 
         if (result != DialogResult.OK)
             return;

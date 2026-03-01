@@ -27,7 +27,20 @@ public class DependencyInfoList : List<DependencyInfo>
 
     public string GetCsv()
     {
-        return "hello!";
+        var s = new StringBuilder();
+        s.AppendLine("Project name; Count; Package name; Count; Package version; Count; Framework; Count");
+
+        foreach (var d in this)
+        {
+            var row = $"{d.ProjectName.Replace(';', ',')}; {d.ProjectNameCount}; {d.PackageName.Replace(';', ',')}; {d.PackageNameCount}; {d.PackageVersion.Replace(';', ',')}; {d.PackageVersionCount}; {d.Framework.Replace(';', ',')}; {d.FrameworkCount}";
+
+            if (d == this.Last())
+                s.Append(row);
+            else
+                s.AppendLine(row);
+        }
+
+        return s.ToString();
     }
 
     public string GetJson()
