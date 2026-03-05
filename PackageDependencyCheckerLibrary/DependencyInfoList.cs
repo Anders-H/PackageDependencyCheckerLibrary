@@ -45,7 +45,33 @@ public class DependencyInfoList : List<DependencyInfo>
 
     public string GetXml()
     {
-        return "hello!";
+        var s = new StringBuilder();
+        s.AppendLine(@"<?xml version = ""1.0"" encoding = ""UTF-8"" standalone = ""yes"" ?>");
+        var componentVersions = new ComponentVersionList();
+
+        foreach (var package in this)
+        {
+            var p = new ComponentVersion(package.PackageName, package.PackageVersion);
+            componentVersions.AddIfNotExists(p);
+        }
+
+        s.AppendLine("<packages>");
+
+        foreach (var component in componentVersions.OrderBy(x => x.Name).ThenBy(x => x.Major).ThenBy(x => x.Minor))
+        {
+            var currentPackageName = "";
+
+            foreach (var componentVersion in componentVersions)
+            {
+                if (componentVersion.Name != currentPackageName)
+                {
+                    
+                }
+            }
+        }
+
+        s.AppendLine("</packages>");
+        return s.ToString();
     }
 
     public string GetFixedWidthText()
