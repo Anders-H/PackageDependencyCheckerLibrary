@@ -1,9 +1,11 @@
 ﻿#nullable enable
+using PackageDependencyCheckerLibrary.TreeStructure;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
-using PackageDependencyCheckerLibrary.TreeStructure;
+using System.Web;
 
 namespace PackageDependencyCheckerLibrary;
 
@@ -47,28 +49,58 @@ public class DependencyInfoList : List<DependencyInfo>
     {
         var s = new StringBuilder();
         s.AppendLine(@"<?xml version = ""1.0"" encoding = ""UTF-8"" standalone = ""yes"" ?>");
-        var componentVersions = new ComponentVersionList();
-
-        foreach (var package in this)
-        {
-            var p = new ComponentVersion(package.PackageName, package.PackageVersion);
-            componentVersions.AddIfNotExists(p);
-        }
-
         s.AppendLine("<packages>");
 
-        foreach (var component in componentVersions.OrderBy(x => x.Name).ThenBy(x => x.Major).ThenBy(x => x.Minor))
-        {
-            var currentPackageName = "";
+        var currentPackageName = "";
+        var packageIsOpen = false;
+        var currentPackageVersion = "";
+        var versionIsOpen = false;
 
-            foreach (var componentVersion in componentVersions)
+        foreach (var p in this.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion))
+        {
+            if (p.PackageName != currentPackageName)
             {
-                if (componentVersion.Name != currentPackageName)
+                currentPackageName = p.PackageName;
+                currentPackageVersion = "";
+
+                if (packageIsOpen)
                 {
-                    
+                    if (versionIsOpen)
+                    {
+                        versionIsOpen = false;
+                        s.AppendLine("        </version>");
+                    }
+
+                    packageIsOpen = false;
+                    s.AppendLine("    </package>");
                 }
+
+                packageIsOpen = true;
+                s.AppendLine($@"    <package value=""{p.PackageName}"" count=""{p.PackageNameCount}"">");
             }
+
+            if (p.PackageVersion != currentPackageVersion)
+            {
+                currentPackageVersion = p.PackageVersion;
+
+                if (versionIsOpen)
+                    s.AppendLine("        </version>");
+
+                versionIsOpen = true;
+                s.AppendLine($@"        <version value=""{p.PackageVersion}"" count=""{p.PackageVersionCount}"">");
+            }
+
+            s.AppendLine($@"            <project count=""{p.ProjectNameCount}"">");
+            s.AppendLine($"                <name>{HttpUtility.HtmlDecode(p.ProjectName)}</name>");
+            s.AppendLine($@"                <framework count=""{p.FrameworkCount}"">{HttpUtility.HtmlDecode(p.Framework)}</framework>");
+            s.AppendLine("            </project>");
         }
+
+        if (versionIsOpen)
+            s.AppendLine("        </version>");
+
+        if (packageIsOpen)
+            s.AppendLine("    </package>");
 
         s.AppendLine("</packages>");
         return s.ToString();
