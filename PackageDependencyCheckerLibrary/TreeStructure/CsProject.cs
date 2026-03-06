@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PackageDependencyCheckerLibrary.TreeStructure;
@@ -17,7 +18,7 @@ public class CsProject : INameAndCount
         Framework = framework;
     }
 
-    public int GetFrameworkCount(CsProjectList projects) =>
+    public int GetFrameworkCount(List<CsProject> projects) =>
         projects.Count(x => x.Framework == Framework);
 
     public override string ToString() =>

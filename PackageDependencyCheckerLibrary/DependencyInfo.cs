@@ -35,7 +35,7 @@ public class DependencyInfo : Dependency
 
         PackageNameCount = 0;
 
-        foreach (var component in all.Where(x => x.PackageName == PackageName & x.PackageVersion == PackageVersion))
+        foreach (var unused in all.Where(x => x.PackageName == PackageName & x.PackageVersion == PackageVersion))
             PackageVersionCount++;
 
         var versions = new ComponentVersionList();

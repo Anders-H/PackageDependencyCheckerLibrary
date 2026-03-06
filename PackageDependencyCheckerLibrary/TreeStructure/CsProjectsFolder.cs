@@ -8,7 +8,7 @@ public class CsProjectsFolder : INameAndCount
 {
     public string Name => "CS Projects";
     public int Count => CsProjects.Count;
-    public CsProjectList CsProjects { get; }
+    public RootFolder CsProjects { get; }
 
     public CsProjectsFolder()
     {
@@ -31,7 +31,7 @@ public class CsProjectsFolder : INameAndCount
             obj.ProjectName.GetHashCode();
     }
 
-    internal CsProjectList Load(DependencyInfoList list)
+    internal RootFolder Load(DependencyInfoList list)
     {
         CsProjects.Clear();
         var comparer = new DependencyInfoProjectComparer();

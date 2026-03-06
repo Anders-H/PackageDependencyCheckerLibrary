@@ -75,8 +75,7 @@ public partial class MainWindow : Form
 
         foreach (var item in root)
         {
-            var node = new TreeNode($"{item.Name} ({item.Count})");
-            node.Tag = item;
+            var node = new TreeNode($"{item.Name} ({item.Count})") { Tag = item };
             treeView1.Nodes.Add(node);
 
             if (item.Count > 0)
@@ -102,8 +101,7 @@ public partial class MainWindow : Form
         {
             foreach (var csProject in csProjectsFolder.CsProjects)
             {
-                var childNode = new TreeNode($"{csProject.Name} ({csProject.Count})");
-                childNode.Tag = csProject;
+                var childNode = new TreeNode($"{csProject.Name} ({csProject.Count})") { Tag = csProject };
                 node.Nodes.Add(childNode);
 
                 if (csProject.Count > 0)
@@ -113,18 +111,13 @@ public partial class MainWindow : Form
         else if (item is CsProject csProject)
         {
             foreach (var dependency in csProject.Dependencies)
-            {
-                var childNode = new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.GetUsagePerVersion().Count}, usage: {_data.GetUsageCount(dependency.PackageName)})");
-                childNode.Tag = dependency;
-                node.Nodes.Add(childNode);
-            }
+                node.Nodes.Add(new TreeNode($"{dependency.PackageName} {dependency.PackageVersion} (versions: {dependency.GetUsagePerVersion().Count}, usage: {_data.GetUsageCount(dependency.PackageName)})") { Tag = dependency });
         }
         else if (item is ComponentsFolder componentsFolder)
         {
             foreach (var component in componentsFolder.Components)
             {
-                var childNode = new TreeNode($"{component.Name} (versions: {component.GetVersions().Count}, usage: {_data.GetUsageCount(component.Name)})");
-                childNode.Tag = component;
+                var childNode = new TreeNode($"{component.Name} (versions: {component.GetVersions().Count}, usage: {_data.GetUsageCount(component.Name)})") { Tag = component };
                 node.Nodes.Add(childNode);
 
                 if (component.Count > 0)
@@ -135,21 +128,13 @@ public partial class MainWindow : Form
         }
         else if (item is Component component)
         {
-            foreach (var dependency in component.GetVersions())
-            {
-                var childNode = new TreeNode($"{dependency.VersionString}");
-                childNode.Tag = dependency;
+            foreach (var childNode in component.GetVersions().Select(dependency => new TreeNode($"{dependency.VersionString}") { Tag = dependency }))
                 node.Nodes.Add(childNode);
-            }
         }
         else if (item is FrameworksFolder frameworksFolder)
         {
-            foreach (var framework in frameworksFolder.Frameworks)
-            {
-                var childNode = new TreeNode($"{framework.Name} ({framework.Usage.Count})");
-                childNode.Tag = framework;
+            foreach (var childNode in frameworksFolder.Frameworks.Select(framework => new TreeNode($"{framework.Name} ({framework.Usage.Count})") { Tag = framework }))
                 node.Nodes.Add(childNode);
-            }
         }
         else
         {
@@ -482,8 +467,7 @@ public partial class MainWindow : Form
         try
         {
             using var sw = new System.IO.StreamWriter(saveFileDialog.FileName);
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(_data);
-            sw.Write(json);
+            sw.Write(_data.GetJson());
             sw.Flush();
             sw.Close();
         }

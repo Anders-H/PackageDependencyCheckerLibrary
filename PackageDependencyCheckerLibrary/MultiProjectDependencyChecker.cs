@@ -70,7 +70,6 @@ public class MultiProjectDependencyChecker
 
         foreach (var d in result)
         {
-            var framework = d.Framework;
             var count = 0;
 
             foreach (var project in projects)

@@ -3,7 +3,6 @@ using PackageDependencyCheckerLibrary.TreeStructure;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Web;
 
@@ -22,10 +21,6 @@ public class DependencyInfoList : List<DependencyInfo>
 
     public int GetUsageCount(string packageName) =>
         this.Count(x => x.PackageName == packageName);
-
-    public int GetProjectCount(DependencyInfo dependencyInfo) =>
-        this.Count(x => x.SourceFilename == dependencyInfo.SourceFilename
-            && x.Framework == dependencyInfo.Framework);
 
     public string GetCsv()
     {
@@ -71,12 +66,11 @@ public class DependencyInfoList : List<DependencyInfo>
                         s.AppendLine("        </version>");
                     }
 
-                    packageIsOpen = false;
                     s.AppendLine("    </package>");
                 }
 
                 packageIsOpen = true;
-                s.AppendLine($@"    <package value=""{p.PackageName}"" count=""{p.PackageNameCount}"">");
+                s.AppendLine($@"    <package value=""{HttpUtility.HtmlDecode(p.PackageName)}"" count=""{p.PackageNameCount}"">");
             }
 
             if (p.PackageVersion != currentPackageVersion)
@@ -87,7 +81,7 @@ public class DependencyInfoList : List<DependencyInfo>
                     s.AppendLine("        </version>");
 
                 versionIsOpen = true;
-                s.AppendLine($@"        <version value=""{p.PackageVersion}"" count=""{p.PackageVersionCount}"">");
+                s.AppendLine($@"        <version value=""{HttpUtility.HtmlDecode(p.PackageVersion)}"" count=""{p.PackageVersionCount}"">");
             }
 
             s.AppendLine($@"            <project count=""{p.ProjectNameCount}"">");
@@ -104,6 +98,44 @@ public class DependencyInfoList : List<DependencyInfo>
 
         s.AppendLine("</packages>");
         return s.ToString();
+    }
+
+    public string GetJson()
+    {
+        var orderedList = this.OrderBy(x => x.PackageName).ThenBy(x => x.PackageVersion).ToList();
+        var s = new StringBuilder();
+        s.AppendLine("[");
+        
+        foreach (var p in orderedList)
+        {
+            s.AppendLine("    {");
+            s.AppendLine($@"        ""packageName"": ""{JsonEncode(p.PackageName)}"",");
+            s.AppendLine($@"        ""packageNameCount"": {p.PackageNameCount},");
+            s.AppendLine($@"        ""packageVersion"": ""{JsonEncode(p.PackageVersion)}"",");
+            s.AppendLine($@"        ""packageVersionCount"": {p.PackageVersionCount},");
+            s.AppendLine($@"        ""Project"": ""{JsonEncode(p.ProjectName)}"",");
+            s.AppendLine($@"        ""ProjectCount"": {p.ProjectNameCount},");
+            s.AppendLine($@"        ""Framework"": ""{JsonEncode(p.Framework)}"",");
+            s.AppendLine($@"        ""FrameworkCount"": {p.FrameworkCount}");
+            s.AppendLine(p == orderedList.Last() ? "    }" : "    },");
+        }
+        
+        s.AppendLine("]");
+        return s.ToString();
+    }
+
+    private string JsonEncode(string value)
+    {
+        value = value.Replace('\n', ' ');
+        value = value.Replace('\r', ' ');
+        value = value.Replace('"', ' ');
+        value = value.Replace('\\', ' ');
+        value = value.Replace('{', '(');
+        value = value.Replace('}', ')');
+        value = value.Replace("    ", " ");
+        value = value.Replace("   ", " ");
+        value = value.Replace("  ", " ");
+        return value.Replace("  ", " ").Trim();
     }
 
     public string GetFixedWidthText()

@@ -1,12 +1,14 @@
 ﻿#nullable enable
 
+using System.Collections.Generic;
+
 namespace PackageDependencyCheckerLibrary.TreeStructure;
 
 public class Framework : INameAndCount
 {
     public string Name { get; }
     public int Count { get; }
-    public CsProjectList Usage { get; }
+    public List<CsProject> Usage { get; }
 
     public Framework(string name, int count)
     {

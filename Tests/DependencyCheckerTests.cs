@@ -1,5 +1,4 @@
-﻿#nullable enable
-using PackageDependencyCheckerLibrary;
+﻿using PackageDependencyCheckerLibrary;
 
 namespace Tests;
 

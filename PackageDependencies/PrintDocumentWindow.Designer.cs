@@ -31,9 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrintDocumentWindow));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnPrevPage = new System.Windows.Forms.ToolStripButton();
-            this.btnNextPage = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.printPreviewControl1 = new System.Windows.Forms.PrintPreviewControl();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
@@ -44,10 +41,7 @@
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripSeparator1,
-            this.btnPrevPage,
-            this.btnNextPage});
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(963, 25);
@@ -62,29 +56,6 @@
             this.toolStripButton1.Size = new System.Drawing.Size(61, 22);
             this.toolStripButton1.Text = "Print...";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnPrevPage
-            // 
-            this.btnPrevPage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnPrevPage.Image = ((System.Drawing.Image)(resources.GetObject("btnPrevPage.Image")));
-            this.btnPrevPage.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnPrevPage.Name = "btnPrevPage";
-            this.btnPrevPage.Size = new System.Drawing.Size(23, 22);
-            this.btnPrevPage.Text = "Previous page";
-            // 
-            // btnNextPage
-            // 
-            this.btnNextPage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnNextPage.Image = ((System.Drawing.Image)(resources.GetObject("btnNextPage.Image")));
-            this.btnNextPage.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnNextPage.Name = "btnNextPage";
-            this.btnNextPage.Size = new System.Drawing.Size(23, 22);
-            this.btnNextPage.Text = "Next page";
             // 
             // statusStrip1
             // 
@@ -134,8 +105,5 @@
         private System.Windows.Forms.PrintPreviewControl printPreviewControl1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Drawing.Printing.PrintDocument printDocument1;
-        private System.Windows.Forms.ToolStripButton btnPrevPage;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton btnNextPage;
     }
 }

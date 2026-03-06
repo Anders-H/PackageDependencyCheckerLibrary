@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PackageDependencyCheckerLibrary.TreeStructure;
 
@@ -16,7 +15,4 @@ public class FrameworkList : List<Framework>
 
         Add(framework);
     }
-
-    public int GetCount(DependencyInfo dependencyInfo) =>
-        (from f in this where f.Name == dependencyInfo.Framework select f.Count).FirstOrDefault();
 }

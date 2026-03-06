@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PackageDependencyCheckerLibrary.TreeStructure;
@@ -7,7 +8,7 @@ public class ComponentsFolder : INameAndCount
 {
     public string Name => "Components";
     public int Count => Components.Count;
-    public ComponentList Components { get; }
+    public List<Component> Components { get; }
 
     public ComponentsFolder()
     {
