@@ -105,14 +105,21 @@ public class MultiProjectDependencyChecker
     {
         var csprojFiles = new List<string>();
 
-        foreach (var fileInfo in dirInfo.GetFiles())
+        try
         {
-            if(fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase))
-                csprojFiles.Add(fileInfo.FullName);
-        }
+            foreach (var fileInfo in dirInfo.GetFiles())
+            {
+                if (fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+                    csprojFiles.Add(fileInfo.FullName);
+            }
 
-        foreach (var directoryInfo in dirInfo.GetDirectories())
-            csprojFiles.AddRange(GetCsprojFiles(directoryInfo));
+            foreach (var directoryInfo in dirInfo.GetDirectories())
+                csprojFiles.AddRange(GetCsprojFiles(directoryInfo));
+        }
+        catch
+        {
+            // ignored
+        }
         
         return csprojFiles;
     }

@@ -36,6 +36,7 @@
             this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportFixedWidthTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -46,8 +47,9 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.exportFixedWidthTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -115,6 +117,13 @@
             this.exportXMLToolStripMenuItem.Text = "Export XML...";
             this.exportXMLToolStripMenuItem.Click += new System.EventHandler(this.exportXMLToolStripMenuItem_Click);
             // 
+            // exportFixedWidthTextToolStripMenuItem
+            // 
+            this.exportFixedWidthTextToolStripMenuItem.Name = "exportFixedWidthTextToolStripMenuItem";
+            this.exportFixedWidthTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.exportFixedWidthTextToolStripMenuItem.Text = "Export fixed width text...";
+            this.exportFixedWidthTextToolStripMenuItem.Click += new System.EventHandler(this.exportFixedWidthTextToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
@@ -156,6 +165,8 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus});
             this.statusStrip1.Location = new System.Drawing.Point(0, 492);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1006, 22);
@@ -206,12 +217,11 @@
             this.listView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.listView1_KeyPress);
             this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
-            // exportFixedWidthTextToolStripMenuItem
+            // lblStatus
             // 
-            this.exportFixedWidthTextToolStripMenuItem.Name = "exportFixedWidthTextToolStripMenuItem";
-            this.exportFixedWidthTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.exportFixedWidthTextToolStripMenuItem.Text = "Export fixed width text...";
-            this.exportFixedWidthTextToolStripMenuItem.Click += new System.EventHandler(this.exportFixedWidthTextToolStripMenuItem_Click);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(22, 17);
+            this.lblStatus.Text = "     ";
             // 
             // MainWindow
             // 
@@ -228,6 +238,8 @@
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -257,6 +269,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportFixedWidthTextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
     }
 }
 

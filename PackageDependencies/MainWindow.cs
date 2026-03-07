@@ -27,6 +27,7 @@ public partial class MainWindow : Form
         var root = d.GetTree(out var data);
         _data = data;
         Text = $@"{ApplicationName} - D:\GitRepos";
+        lblStatus.Text = @"D:\GitRepos";
         RefreshView(root);
 #endif
     }
@@ -47,29 +48,33 @@ public partial class MainWindow : Form
             return;
 
         RootFolder root;
-        Cursor = Cursors.WaitCursor;
+        Cursor.Current = Cursors.WaitCursor;
+        lblStatus.Text = @"Loading... Please wait...";
+        Refresh();
 
         try
         {
             var d = new MultiProjectDependencyChecker(f.SelectedPath);
             root = d.GetTree(out var data);
             _data = data;
+            lblStatus.Text = $@"{f.SelectedPath} - {_data.Count} records loaded";
         }
         catch (Exception exception)
         {
+            lblStatus.Text = @"Load failed.";
             Cursor = Cursors.Default;
             MessageBox.Show(this, $@"An error occurred while analyzing the folder: {exception.Message}", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
-        Cursor = Cursors.Default;
+        Cursor.Current = Cursors.Default;
         Text = $@"{ApplicationName} - {f.SelectedPath}";
         RefreshView(root);
     }
 
     private void RefreshView(RootFolder root)
     {
-        Cursor = Cursors.WaitCursor;
+        Cursor.Current = Cursors.WaitCursor;
         treeView1.BeginUpdate();
         treeView1.Nodes.Clear();
 
@@ -86,13 +91,13 @@ public partial class MainWindow : Form
 
         if (treeView1.Nodes.Count <= 0)
         {
-            Cursor = Cursors.Default;
+            Cursor.Current = Cursors.Default;
             return;
         }
 
         treeView1.SelectedNode = treeView1.Nodes[0];
         treeView1.SelectedNode.EnsureVisible();
-        Cursor = Cursors.Default;
+        Cursor.Current = Cursors.Default;
     }
 
     private void AddChildren(TreeNode node, INameAndCount item)
@@ -144,6 +149,7 @@ public partial class MainWindow : Form
 
     private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
     {
+        _columnSorter.SortColumn = 0;
         var n = treeView1.SelectedNode;
 
         if (n == null)
