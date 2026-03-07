@@ -51,3 +51,7 @@ Framework: net8.0-windows (47)
 PackageDependencies is a sample program written in C# using .NET Framework 4.8 so that it will run on any patched Windows machine.
 
 ![screenshot](screenshot.jpg)
+
+### Download
+
+Download the installation program here: [PackageDependencyChecker.exe](https://github.com/Anders-H/PackageDependencyCheckerLibrary/blob/main/Output/PackageDependencyChecker.exe) (klick "download raw")
