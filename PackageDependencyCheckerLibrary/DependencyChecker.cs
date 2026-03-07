@@ -23,7 +23,7 @@ public class DependencyChecker
         if (!fileInfo.Exists)
             return null;
 
-        return fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase)
+        return fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase) || fileInfo.Extension.Equals(".vbproj", StringComparison.OrdinalIgnoreCase)
             ? new DependencyChecker(filename)
             : null;
     }
@@ -33,7 +33,7 @@ public class DependencyChecker
         var dependencies = new List<Dependency>();
         var fileInfo = new FileInfo(_filename);
 
-        if (fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+        if (fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase) || fileInfo.Extension.Equals(".vbproj", StringComparison.OrdinalIgnoreCase))
         {
             var nameOnly = fileInfo.Name.Substring(0, fileInfo.Name.Length - 7);
             var framework = "";

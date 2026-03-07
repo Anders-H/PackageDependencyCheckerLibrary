@@ -91,7 +91,7 @@ public class MultiProjectDependencyChecker
 
         foreach (var fileInfo in dirInfo.GetFiles())
         {
-            if(fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+            if (fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase) || fileInfo.Extension.Equals(".vbproj", StringComparison.OrdinalIgnoreCase))
                 csprojFiles.Add(fileInfo.FullName);
         }
 
@@ -109,7 +109,7 @@ public class MultiProjectDependencyChecker
         {
             foreach (var fileInfo in dirInfo.GetFiles())
             {
-                if (fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+                if (fileInfo.Extension.Equals(".csproj", StringComparison.OrdinalIgnoreCase) || fileInfo.Extension.Equals(".vbproj", StringComparison.OrdinalIgnoreCase))
                     csprojFiles.Add(fileInfo.FullName);
             }
 
