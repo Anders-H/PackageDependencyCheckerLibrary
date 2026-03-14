@@ -55,3 +55,9 @@ PackageDependencies is a sample program written in C# using .NET Framework 4.8 s
 ### Download
 
 Download the installation program here: [PackageDependencyChecker.exe](https://github.com/Anders-H/PackageDependencyCheckerLibrary/blob/main/Output/PackageDependencyChecker.exe) (click "download raw")
+
+### Version history
+
+**Current version: 1.0**
+
+- Version 1.1: Ability to save and load report files.
