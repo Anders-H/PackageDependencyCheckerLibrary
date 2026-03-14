@@ -546,4 +546,22 @@ public partial class MainWindow : Form
         x.Show();
         x.BringToFront();
     }
+
+    private void loadFileToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void aboutToolStripMenuItem_Click(object sender, EventArgs e) =>
+        MessageBox.Show(this, ProgramVersion.VersionHistory, ProgramVersion.NameAndVersion, MessageBoxButtons.OK, MessageBoxIcon.Information);
 }

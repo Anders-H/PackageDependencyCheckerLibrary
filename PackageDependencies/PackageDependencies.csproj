@@ -65,6 +65,7 @@
       <DependentUpon>PrintDocumentWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProgramVersion.cs" />
     <Compile Include="ProjectPropertiesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
